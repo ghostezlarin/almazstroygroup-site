@@ -1,0 +1,36 @@
+{# Блок «Мы бесплатно проконсультируем» с формой заявки — главная и контакты #}
+<section class="consult {{ consult_class|default('') }}" id="consult">
+  <div class="container consult__grid">
+    {% if consult_image|default(true) %}
+    <div class="consult__img reveal"><img src="{{ url_for('static', filename='img/consult.jpg') }}" alt="Интерьер спальни" loading="lazy"></div>
+    {% endif %}
+    <div class="consult__body reveal">
+      <h2 class="h-display h-display--muted">МЫ БЕСПЛАТНО ПРОКОНСУЛЬТИРУЕМ И ПОДБЕРЁМ ПОДХОДЯЩИЙ ПАКЕТ УСЛУГ.</h2>
+      <p class="consult__lead">НАПИШИТЕ НАМ ИЛИ ОСТАВЬТЕ ЗАЯВКУ — МЫ СВЯЖЕМСЯ С ВАМИ В САМОЕ БЛИЖАЙШЕЕ ВРЕМЯ.</p>
+      <ul class="consult__links">
+        <li><a href="{{ C.CONTACTS.telegram }}" target="_blank" rel="noopener">написать в Telegram</a></li>
+        <li><a href="{{ C.CONTACTS.whatsapp }}" target="_blank" rel="noopener">написать в WhatsApp</a></li>
+        <li><a href="mailto:{{ C.CONTACTS.email }}">отправить сообщение на Email</a></li>
+      </ul>
+      <form class="form js-form" action="{{ url_for('api_lead') }}" novalidate>
+        <input type="hidden" name="source" value="{{ consult_source|default('Форма консультации') }}">
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="seg" role="radiogroup" aria-label="Что вас интересует">
+          <label><input type="radio" name="kind" value="repair" checked><span>ремонт</span></label>
+          <label><input type="radio" name="kind" value="design"><span>дизайн-проект</span></label>
+          <label><input type="radio" name="kind" value="consult"><span>другое</span></label>
+        </div>
+        <label class="field"><input type="text" name="name" placeholder=" " autocomplete="name"><span>ИМЯ</span><em class="field__err"></em></label>
+        <label class="field"><input type="tel" name="phone" placeholder=" " autocomplete="tel" class="js-phone"><span>ТЕЛЕФОН</span><em class="field__err"></em></label>
+        <label class="field"><textarea name="comment" rows="1" placeholder=" "></textarea><span>КОММЕНТАРИИ</span></label>
+        <label class="check"><input type="checkbox" name="consent" value="1"><i></i><span>я согласен с <a href="{{ url_for('privacy') }}" target="_blank">политикой конфиденциальности</a></span><em class="field__err"></em></label>
+        <button class="btn-line" type="submit"><span>ОСТАВИТЬ ЗАЯВКУ</span></button>
+        <p class="form__msg" role="status"></p>
+      </form>
+      <div class="form-success">
+        <h3>Спасибо! Заявка принята.</h3>
+        <p>Мы свяжемся с вами в самое ближайшее время.</p>
+      </div>
+    </div>
+  </div>
+</section>

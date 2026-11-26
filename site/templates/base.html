@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{% block title %}Алмазстройгрупп — ремонт, строительство и дизайн интерьера{% endblock %}</title>
+  <meta name="description" content="{% block description %}Более 25 лет в ремонте и строительстве, более 12 лет в дизайне интерьера. Москва, МО и вся Россия.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:wght@300;400;600&family=Oswald:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body class="page-{{ page }}">
+
+{% macro logo(cls='') -%}
+  <a href="{{ url_for('index') }}" class="logo {{ cls }}" aria-label="Алмазстройгрупп — на главную">
+    <img src="{{ url_for('static', filename='img/logo-mark.png') }}" alt=""><span>лмазстройгрупп</span>
+  </a>
+{%- endmacro %}
+
+<header class="header {% block header_class %}{% endblock %}" id="header">
+  <div class="header__inner">
+    {{ logo() }}
+    <div class="header__lang"><span class="is-active">ru</span><span title="Английская версия — в разработке">en</span></div>
+    <nav class="header__nav" id="nav">
+      <a href="{{ url_for('about') }}" class="{{ 'is-active' if page == 'about' }}">о нас</a>
+      <a href="{{ url_for('gallery') }}" class="{{ 'is-active' if page == 'gallery' }}">галерея</a>
+      <a href="{{ url_for('services') }}" class="{{ 'is-active' if page == 'services' }}">услуги</a>
+      <a href="{{ url_for('contacts') }}" class="{{ 'is-active' if page == 'contacts' }}">контакты</a>
+    </nav>
+    <button class="header__burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+{% block marquee %}
+<button class="marquee" type="button" data-lead="estimate" data-title="Получите смету бесплатно" data-source="Беговая дорожка">
+  <div class="marquee__track">
+    {% for i in range(8) %}<span>ПОЛУЧИТЕ СМЕТУ БЕСПЛАТНО</span>{% endfor %}
+  </div>
+</button>
+{% endblock %}
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__top">
+      <h3 class="footer__title">КОНТАКТЫ</h3>
+      <nav class="footer__nav">
+        <a href="{{ url_for('about') }}">о нас</a>
+        <a href="{{ url_for('gallery') }}">галерея</a>
+        <a href="{{ url_for('services') }}">услуги</a>
+      </nav>
+    </div>
+    <div class="footer__grid">
+      <div>
+        <a href="tel:+7{{ C.CONTACTS.phone_design[1:] }}">{{ C.CONTACTS.phone_design }} (дизайн)</a><br>
+        <a href="tel:+7{{ C.CONTACTS.phone_repair[1:] }}">{{ C.CONTACTS.phone_repair }} (ремонт)</a><br>
+        <a href="mailto:{{ C.CONTACTS.email }}">{{ C.CONTACTS.email }}</a>
+        {% include 'partials/social.html' %}
+        <p class="footer__note">*Социальная сеть Instagram запрещена на территории РФ.<br>Meta Platforms Inc. признана экстремистской на территории РФ.</p>
+      </div>
+      <div>
+        <p>{{ C.CONTACTS.company }}<br>ИНН {{ C.CONTACTS.inn }}<br>ОГРН {{ C.CONTACTS.ogrn }}</p>
+        <p class="footer__note footer__note--legal">Все материалы, представленные на сайте, принадлежат правообладателю и охраняются авторским правом в соответствии с законодательством РФ.<br><a href="{{ url_for('privacy') }}">Соглашение об обработке персональных данных.</a></p>
+        <p><a href="{{ url_for('team') }}" class="link-line">Стать частью команды →</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© {{ 2025 }}</span>
+    <img src="{{ url_for('static', filename='img/logo-mark.png') }}" alt="" class="footer__mark">
+  </div>
+</footer>
+
+{% include 'partials/lead_modal.html' %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

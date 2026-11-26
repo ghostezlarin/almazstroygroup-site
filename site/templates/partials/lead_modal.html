@@ -1,0 +1,44 @@
+<div class="modal" id="lead-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__dialog">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">×</button>
+    <div class="modal__body">
+      <p class="eyebrow" id="lead-modal-eyebrow">заявка</p>
+      <h2 class="modal__title" id="lead-modal-title">Обсудить стоимость</h2>
+      <p class="modal__lead">Оставьте контакты — мы бесплатно проконсультируем и подберём подходящий пакет услуг.</p>
+
+      <form class="form js-form" action="{{ url_for('api_lead') }}" novalidate>
+        <input type="hidden" name="kind" value="consult">
+        <input type="hidden" name="service" value="">
+        <input type="hidden" name="source" value="">
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <label class="field"><input type="text" name="name" placeholder=" " autocomplete="name" required><span>ИМЯ</span><em class="field__err"></em></label>
+        <label class="field"><input type="tel" name="phone" placeholder=" " autocomplete="tel" class="js-phone" required><span>ТЕЛЕФОН</span><em class="field__err"></em></label>
+        <div class="field-row">
+          <label class="field field--select">
+            <select name="object_type">
+              <option value="">ТИП ОБЪЕКТА</option>
+              <option>Квартира</option>
+              <option>Дом / коттедж</option>
+              <option>Коммерческое помещение</option>
+              <option>Другое</option>
+            </select>
+          </label>
+          <label class="field"><input type="text" name="area" placeholder=" " inputmode="numeric"><span>ПЛОЩАДЬ, М²</span></label>
+        </div>
+        <label class="field"><textarea name="comment" rows="2" placeholder=" "></textarea><span>КОММЕНТАРИИ</span></label>
+        <label class="check"><input type="checkbox" name="consent" value="1"><i></i><span>я согласен с <a href="{{ url_for('privacy') }}" target="_blank">политикой конфиденциальности</a></span><em class="field__err"></em></label>
+        <button class="btn-line" type="submit"><span>ОСТАВИТЬ ЗАЯВКУ</span></button>
+        <p class="form__msg" role="status"></p>
+      </form>
+
+      <div class="form-success">
+        <p class="eyebrow">готово</p>
+        <h3>Спасибо! Заявка принята.</h3>
+        <p>Мы свяжемся с вами в самое ближайшее время.</p>
+        <button class="btn-line" type="button" data-close><span>ЗАКРЫТЬ</span></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<section class="section stages" data-stages>
+  <div class="stages__bar">
+    <span class="section-link section-link--static">этапы <i>›</i></span>
+    <div class="stages__switch">
+      <button type="button" class="stages__arrow" data-dir="-1" aria-label="Предыдущий раздел">‹</button>
+      <button type="button" class="stages__tab is-active" data-tab="design">ДИЗАЙН</button>
+      <button type="button" class="stages__tab" data-tab="repair">РЕМОНТ</button>
+      <button type="button" class="stages__arrow" data-dir="1" aria-label="Следующий раздел">›</button>
+    </div>
+  </div>
+  {% for key, steps in C.STAGES.items() %}
+  <ol class="stages__list {{ 'is-active' if loop.first }}" data-panel="{{ key }}">
+    {% for s in steps %}
+    <li style="--d:{{ loop.index0 * 50 }}ms"><span class="num">({{ '%02d' % loop.index }})</span>{{ s|upper }}</li>
+    {% endfor %}
+  </ol>
+  {% endfor %}
+</section>

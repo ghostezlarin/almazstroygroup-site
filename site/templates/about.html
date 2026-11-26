@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}О нас — Алмазстройгрупп{% endblock %}
+{% block content %}
+
+<section class="about-top container">
+  <div class="about-top__main">
+    <p class="eyebrow eyebrow--line">о нас</p>
+    <h1 class="h-display">Более 25 лет на рынке ремонта и строительства, и более 12 лет в области дизайна интерьера.</h1>
+    <img src="{{ url_for('static', filename='img/about-office.jpg') }}" alt="Офис компании" class="about-top__img reveal">
+  </div>
+  <div class="about-top__team">
+    <article class="person reveal">
+      <p class="person__name">АЛЕКСАНДР ЕВДОКИМОВ ВАЛЕРЬЕВИЧ</p>
+      <h3>Руководитель компании</h3>
+      <a href="{{ C.CONTACTS.telegram }}" target="_blank" rel="noopener" class="person__link">написать в telegram</a>
+      <img src="{{ url_for('static', filename='img/team-ceo.jpg') }}" alt="Александр Евдокимов" loading="lazy">
+    </article>
+    <article class="person reveal" style="--d:90ms">
+      <p class="person__name">АМИНОВА КРИСТИНА АКРАМОВНА</p>
+      <h3>Ведущий дизайнер</h3>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="person__link">instagram*</a>
+      <p class="person__quote">Мои прочные отношения с дизайном завязались в 2013 году. Более 10 лет питаю искреннее любопытство к миру дизайна, а приобретённый опыт с энтузиазмом применяю в своих жилых и коммерческих пространствах. Я искренне люблю своё дело.</p>
+      <img src="{{ url_for('static', filename='img/team-designer.jpg') }}" alt="Кристина Аминова" loading="lazy">
+    </article>
+  </div>
+</section>
+
+<section class="section container container--narrow">
+  <div class="brand-block reveal">
+    <div class="logo logo--big"><img src="{{ url_for('static', filename='img/logo-mark.png') }}" alt=""><span>лмазстройгрупп</span></div>
+    <p>Мы успешно воплощаем в жизнь дизайнерские проекты и строительство, превращая ваши идеи в реальность. Наша экспертиза позволяет нам создавать уникальные пространства, которые гармонично сочетают в себе роскошь, функциональность и высочайшее качество исполнения, полностью соответствующие вашим ожиданиям и самым строгим стандартам.</p>
+    <p>Наша команда — это опытные и ответственные специалисты, которые подходят к каждому проекту с полной отдачей. Мы гарантируем высокое качество работ, выполненных быстро и аккуратно.</p>
+  </div>
+  {% include 'partials/stats.html' %}
+</section>
+
+<section class="photo-pair">
+  <img src="{{ url_for('static', filename='img/about-work1.jpg') }}" alt="Инженеры на объекте" loading="lazy">
+  <img src="{{ url_for('static', filename='img/about-work2.jpg') }}" alt="Работа над чертежами" loading="lazy">
+</section>
+
+<section class="section container container--narrow prose reveal">
+  <p>Мы любим работать со светом и технологичными современными решениями для завершения образа. Современная архитектура и дизайн — это естественность конструкции и уместность.</p>
+  <p>Мы берём 1–2 проекта в месяц и погружаемся в каждый из них с полным составом студии.</p>
+</section>
+
+<section class="values">
+  <div class="container">
+    <h2 class="h-small values__title">наши ценности</h2>
+    <div class="values__grid">
+      {% for title, text in C.VALUES %}
+      <div class="reveal" style="--d:{{ loop.index0 * 80 }}ms"><h3>{{ title }}</h3><p>{{ text }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="join">
+  <a href="{{ url_for('team') }}" class="join__btn">стать частью команды</a>
+</section>
+
+{% endblock %}
+{% block marquee %}{% endblock %}

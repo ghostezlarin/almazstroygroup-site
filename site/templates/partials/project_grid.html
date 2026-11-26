@@ -1,0 +1,32 @@
+<div class="projects {{ grid_class|default('') }}">
+  {% for p in projects %}
+  <button type="button" class="project reveal" style="--d:{{ (loop.index0 % 4) * 70 }}ms"
+          data-project='{{ {"title": p.title, "city": p.city, "area": p.area, "year": p.year, "kind": p.kind, "img": url_for("static", filename="img/" ~ p.img)}|tojson|forceescape }}'>
+    <img src="{{ url_for('static', filename='img/' ~ p.img) }}" alt="{{ p.title }}" loading="lazy">
+    <span class="project__cap">{{ p.city|lower }} {{ p.area }} m²<br>{{ p.year }}</span>
+  </button>
+  {% endfor %}
+</div>
+
+{% if not project_overlay_done %}
+<div class="lightbox" id="project-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="lightbox__backdrop" data-close></div>
+  <div class="lightbox__card">
+    <button class="modal__close" type="button" data-close aria-label="Закрыть">×</button>
+    <img class="lightbox__img" alt="">
+    <div class="lightbox__info">
+      <p class="eyebrow lightbox__kind"></p>
+      <h3 class="lightbox__title"></h3>
+      <dl>
+        <div><dt>город</dt><dd class="lightbox__city"></dd></div>
+        <div><dt>площадь</dt><dd class="lightbox__area"></dd></div>
+        <div><dt>год</dt><dd class="lightbox__year"></dd></div>
+      </dl>
+      <div class="lightbox__actions">
+        <a href="{{ url_for('gallery') }}" class="btn-line"><span>ПОСМОТРЕТЬ ПРОЕКТ</span></a>
+        <button type="button" class="link-line" data-lead="consult" data-title="Хочу такой же проект" data-source="Галерея — карточка проекта">хочу так же →</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

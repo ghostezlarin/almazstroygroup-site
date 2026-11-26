@@ -1,0 +1,108 @@
+{% extends 'admin/layout.html' %}
+{% block title %}{{ 'Клиенты' if tab == 'leads' else 'Сотрудничество' }}{% endblock %}
+{% block body %}
+{% set endpoint = 'admin_leads' if tab == 'leads' else 'admin_partners' %}
+
+<header class="a-top">
+  <a href="{{ url_for('index') }}" class="a-brand" target="_blank">
+    <img src="{{ url_for('static', filename='img/logo-mark.png') }}" alt=""><span>лмазстройгрупп</span>
+  </a>
+  <nav class="a-tabs">
+    <a href="{{ url_for('admin_leads') }}" class="{{ 'is-active' if tab == 'leads' }}">
+      Заявки клиентов {% if counts.leads.new %}<b>{{ counts.leads.new }}</b>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_partners') }}" class="{{ 'is-active' if tab == 'partners' }}">
+      Сотрудничество {% if counts.partners.new %}<b>{{ counts.partners.new }}</b>{% endif %}
+    </a>
+  </nav>
+  <a href="{{ url_for('admin_logout') }}" class="a-logout">Выйти</a>
+</header>
+
+<main class="a-main">
+  {% for m in get_flashed_messages() %}<p class="flash">{{ m }}</p>{% endfor %}
+
+  <form class="a-filters" method="get">
+    <div class="a-chips">
+      <a href="{{ url_for(endpoint, q=q or None) }}" class="a-chip {{ 'is-active' if not status }}">Все активные</a>
+      {% for key, label in STATUSES.items() %}
+      <a href="{{ url_for(endpoint, status=key, q=q or None) }}" class="a-chip a-chip--{{ key }} {{ 'is-active' if status == key }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+    <div class="a-search">
+      {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+      {% if tab == 'leads' %}
+      <select name="kind" onchange="this.form.submit()">
+        <option value="">Все типы</option>
+        {% for key, label in Lead.KINDS.items() %}<option value="{{ key }}" {{ 'selected' if args.get('kind') == key }}>{{ label }}</option>{% endfor %}
+      </select>
+      {% else %}
+      <select name="type" onchange="this.form.submit()">
+        <option value="">Все форматы</option>
+        {% for key, label in Partnership.TYPES.items() %}<option value="{{ key }}" {{ 'selected' if args.get('type') == key }}>{{ label }}</option>{% endfor %}
+      </select>
+      {% endif %}
+      <input type="search" name="q" value="{{ q }}" placeholder="Поиск по имени или телефону">
+    </div>
+  </form>
+
+  {% if not items %}
+  <div class="a-empty">
+    <p>Здесь пока пусто.</p>
+    <p class="a-muted">Новые заявки с сайта появятся здесь и одновременно придут в Telegram.</p>
+  </div>
+  {% endif %}
+
+  <div class="a-cards">
+    {% for it in items %}
+    {% set anchor = ('lead-' if tab == 'leads' else 'partner-') ~ it.id %}
+    <article class="a-card a-card--{{ it.status }}" id="{{ anchor }}">
+      <div class="a-card__head">
+        <span class="a-card__id">№{{ it.id }}</span>
+        <span class="a-tag">{{ it.kind_label if tab == 'leads' else it.type_label }}</span>
+        <span class="a-status a-status--{{ it.status }}">{{ STATUSES[it.status] }}</span>
+        <time class="a-card__time" datetime="{{ it.created_at.isoformat() }}">{{ it.created_at.strftime('%d.%m.%Y, %H:%M') }}</time>
+      </div>
+
+      <h2 class="a-card__name">{{ it.name }}</h2>
+      <a class="a-card__phone" href="tel:{{ it.phone|replace(' ', '')|replace('(', '')|replace(')', '')|replace('-', '') }}">{{ it.phone }}</a>
+
+      <dl class="a-card__meta">
+        {% if tab == 'leads' %}
+          {% if it.service %}<div><dt>Услуга</dt><dd>{{ it.service }}</dd></div>{% endif %}
+          {% if it.object_type %}<div><dt>Объект</dt><dd>{{ it.object_type }}</dd></div>{% endif %}
+          {% if it.area %}<div><dt>Площадь</dt><dd>{{ it.area }} м²</dd></div>{% endif %}
+          {% if it.source %}<div><dt>Источник</dt><dd>{{ it.source }}</dd></div>{% endif %}
+        {% else %}
+          {% if it.email %}<div><dt>Email</dt><dd><a href="mailto:{{ it.email }}">{{ it.email }}</a></dd></div>{% endif %}
+          {% if it.specialization %}<div><dt>Специализация</dt><dd>{{ it.specialization }}</dd></div>{% endif %}
+          {% if it.experience %}<div><dt>Опыт</dt><dd>{{ it.experience }}</dd></div>{% endif %}
+          {% if it.city %}<div><dt>Город</dt><dd>{{ it.city }}</dd></div>{% endif %}
+          {% if it.company %}<div><dt>Компания</dt><dd>{{ it.company }}</dd></div>{% endif %}
+          {% if it.portfolio %}<div><dt>Портфолио</dt><dd><a href="{{ it.portfolio if it.portfolio.startswith('http') else 'https://' ~ it.portfolio }}" target="_blank" rel="noopener noreferrer">{{ it.portfolio|truncate(40, True) }}</a></dd></div>{% endif %}
+        {% endif %}
+      </dl>
+
+      {% set text = it.comment if tab == 'leads' else it.message %}
+      {% if text %}<p class="a-card__text">{{ text }}</p>{% endif %}
+
+      <div class="a-card__foot">
+        <form method="post" action="{{ url_for('admin_set_status', key=tab, obj_id=it.id) }}" class="a-status-form">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          {% for key, label in STATUSES.items() if key != it.status %}
+          <button name="status" value="{{ key }}" class="a-btn a-btn--sm a-btn--{{ key }}">{{ label }}</button>
+          {% endfor %}
+        </form>
+        <form method="post" action="{{ url_for('admin_resend', key=tab, obj_id=it.id) }}" class="a-tg">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          {% if it.tg_sent %}
+          <span class="a-tg__ok" title="Уведомление доставлено в Telegram">✓ Telegram</span>
+          {% else %}
+          <button class="a-btn a-btn--sm a-btn--ghost" title="Уведомление в Telegram не отправлено">↻ В Telegram</button>
+          {% endif %}
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

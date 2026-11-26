@@ -1,0 +1,14 @@
+{% extends 'admin/layout.html' %}
+{% block title %}Вход{% endblock %}
+{% block body %}
+<main class="login">
+  <form method="post" class="login__card">
+    <img src="{{ url_for('static', filename='img/logo-mark.png') }}" alt="" class="login__mark">
+    <h1>Панель заявок</h1>
+    {% for m in get_flashed_messages() %}<p class="flash flash--err">{{ m }}</p>{% endfor %}
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label class="a-field"><span>Пароль</span><input type="password" name="password" autofocus required></label>
+    <button type="submit" class="a-btn a-btn--primary">Войти</button>
+  </form>
+</main>
+{% endblock %}

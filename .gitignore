@@ -1,0 +1,7 @@
+.claude/
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+*.sqlite*

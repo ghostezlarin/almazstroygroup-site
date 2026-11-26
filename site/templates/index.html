@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block header_class %}header--over{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero__bg" style="background-image:url('{{ url_for('static', filename='img/hero.jpg') }}')"></div>
+  <div class="hero__inner">
+    <p class="hero__geo">Работаем по Москве, МО и по всей России</p>
+    <div class="hero__ctas">
+      <button type="button" class="hero__cta" data-lead="repair" data-title="Обсудить стоимость ремонтных работ" data-source="Главная — первый экран">ОБСУДИТЬ СТОИМОСТЬ РЕМОНТНЫХ РАБОТ</button>
+      <button type="button" class="hero__cta" data-lead="design" data-title="Обсудить стоимость дизайн-проекта" data-source="Главная — первый экран">ОБСУДИТЬ СТОИМОСТЬ ДИЗАЙН-ПРОЕКТА</button>
+    </div>
+    <h1 class="hero__title">Более 25 лет на рынке ремонта и строительства,<br>и более 12 лет в области дизайна интерьера.</h1>
+  </div>
+</section>
+
+<section class="section about-short">
+  <a href="{{ url_for('about') }}" class="section-link">о нас <i>›</i></a>
+  <div class="container container--narrow">
+    <div class="team-duo reveal">
+      <figure><img src="{{ url_for('static', filename='img/team-ceo.jpg') }}" alt="Александр Евдокимов — руководитель компании" loading="lazy"></figure>
+      <figure><img src="{{ url_for('static', filename='img/team-designer.jpg') }}" alt="Кристина Аминова — ведущий дизайнер" loading="lazy"></figure>
+    </div>
+    <div class="brand-block reveal">
+      <div class="logo logo--big"><img src="{{ url_for('static', filename='img/logo-mark.png') }}" alt=""><span>лмазстройгрупп</span></div>
+      <p>Мы успешно воплощаем в жизнь дизайнерские проекты и строительство, превращая ваши идеи в реальность. Наша экспертиза позволяет нам создавать уникальные пространства, которые гармонично сочетают в себе роскошь, функциональность и высочайшее качество исполнения, полностью соответствующие вашим ожиданиям и самым строгим стандартам.</p>
+      <p>Наша команда — это опытные и ответственные специалисты, которые подходят к каждому проекту с полной отдачей. Мы гарантируем высокое качество работ, выполненных быстро и аккуратно.</p>
+    </div>
+    <hr class="rule">
+    {% include 'partials/stats.html' %}
+  </div>
+</section>
+
+<section class="section reasons">
+  <div class="container container--narrow"><h2 class="h-small">10 причин почему мы:</h2></div>
+  <ol class="reasons__list">
+    {% for r in C.REASONS %}
+    <li class="reveal" style="--d:{{ loop.index0 * 50 }}ms"><span class="num">({{ '%02d' % loop.index }})</span>{{ r }}</li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="section gallery-teaser">
+  <a href="{{ url_for('gallery') }}" class="section-link section-link--caps">галерея <i>›</i></a>
+  <h2 class="h-display h-display--center reveal">Мы работаем от эконом до премиум сегмента<br>с авторским и индивидуальным подходом.</h2>
+  {% with projects = C.PROJECTS[:8] %}{% include 'partials/project_grid.html' %}{% endwith %}
+</section>
+
+<section class="section how">
+  <div class="container container--narrow">
+    <h2 class="h-display h-display--center reveal">От эскиза до заселения.</h2>
+    <p class="how__sub">Как мы работаем?</p>
+    <div class="prose reveal">
+      <p>Мы делаем ремонт квартир и коттеджей «под ключ», учитываем все пожелания клиента до мельчайших деталей, составляем полный план работ и смету. В процессе работы соблюдаем строительные нормативы и требования ГОСТ. Оставляем после ремонта за собой чистые помещения, вывозя строительный мусор. Предоставляем гарантию на проведённые работы. Предоставляем широкий спектр услуг, включая не только ремонтные работы, но и установку сантехники, сборку мебели, монтаж дверей и прочее.</p>
+      <p class="prose__accent">Мы одинаково сильны как в дизайне интерьера, так и в его реализации.</p>
+      <p class="prose__small">Дизайн интерьера создаётся профессиональным персоналом, который постоянно находится в курсе последних тенденций и технологий. Каждый сотрудник проходит необходимую специальную подготовку и имеет большой опыт работы в этой области. В команду бюро входят профессионалы из дизайн-студии, которые умеют сочетать в проекте свои идеи и предпочтения, практичность и комфорт с современным стилем.</p>
+    </div>
+  </div>
+</section>
+
+{% include 'partials/stages.html' %}
+
+<section class="slider-section">
+  <a href="{{ url_for('services') }}" class="section-link">наши услуги <i>›</i></a>
+  <div class="slider" data-slider>
+    <div class="slider__track">
+      <figure class="slider__slide is-active">
+        <img src="{{ url_for('static', filename='img/house.jpg') }}" alt="Частный дом HRUSTALNIY PARK" loading="lazy">
+        <figcaption>HRUSTALNIY PARK<br>MOSCOW 2024</figcaption>
+      </figure>
+      <figure class="slider__slide">
+        <img src="{{ url_for('static', filename='img/g-stone.jpg') }}" alt="Частный дом с каменным фасадом" loading="lazy">
+        <figcaption>STONE HOUSE<br>MOSCOW REGION 2024</figcaption>
+      </figure>
+    </div>
+    <button class="slider__btn slider__btn--prev" type="button" aria-label="Предыдущий слайд">‹</button>
+    <button class="slider__btn slider__btn--next" type="button" aria-label="Следующий слайд">›</button>
+    <div class="slider__dots"></div>
+  </div>
+</section>
+
+<div class="stack">
+  <section class="stack__sheet partners">
+    <h2 class="h-small h-small--center">Наши партнёры:</h2>
+    <img src="{{ url_for('static', filename='img/partners.png') }}" alt="Логотипы партнёров: Технониколь, Rockwool, VEKA, FAKRO, Schüco, VELUX, Knauf, FLOS, Vitra, Porcelanosa, Natuzzi и другие" class="partners__img" loading="lazy">
+  </section>
+  <section class="stack__sheet socials-promo">
+    <img src="{{ url_for('static', filename='img/devices.jpg') }}" alt="" class="socials-promo__img" loading="lazy">
+    <div class="socials-promo__body">
+      <h2 class="h-display h-display--muted">МЫ В СОЦИАЛЬНЫХ СЕТЯХ.</h2>
+      <p>Делимся проектами, этапами работы и полезной информацией на тему ремонта и дизайна.<br>Становитесь частью сообщества и присоединяйтесь!</p>
+      {% include 'partials/social.html' %}
+    </div>
+  </section>
+  <div class="stack__sheet stack__sheet--last">
+    {% with consult_source='Главная — форма консультации' %}{% include 'partials/consult.html' %}{% endwith %}
+  </div>
+</div>
+
+{% endblock %}

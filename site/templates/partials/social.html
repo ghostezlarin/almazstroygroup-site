@@ -1,0 +1,5 @@
+<div class="social">
+  {% for key, label, href in C.CONTACTS.social %}
+  <a href="{{ href }}" target="_blank" rel="noopener" aria-label="{{ label }}" title="{{ label }}">{{ icon(key) }}</a>
+  {% endfor %}
+</div>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Контакты — Алмазстройгрупп{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <h1 class="page-head__title">контакты</h1>
+  <p class="page-head__text page-head__text--center">Если возникла потребность в стильном интерьере, вы знаете, что делать.</p>
+  <a href="#consult" class="page-head__down" aria-label="К форме">⌄</a>
+</section>
+
+<section class="contacts-banner">
+  {# Сюда встанет видео реализованного проекта (монохромный фильтр уже задан в CSS) #}
+  <img src="{{ url_for('static', filename='img/contacts-banner.jpg') }}" alt="Интерьер гостиной" class="contacts-banner__media">
+</section>
+
+{% with consult_image=false, consult_class='consult--solo', consult_source='Контакты — форма' %}{% include 'partials/consult.html' %}{% endwith %}
+
+{% endblock %}
+{% block marquee %}{% endblock %}

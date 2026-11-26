@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Услуги — Алмазстройгрупп{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <h1 class="page-head__title">УСЛУГИ</h1>
+  <p class="page-head__text">Независимо от того, на какой стадии находится ваш проект, мы готовы стать вашим надёжным партнёром. Мы предлагаем не просто услуги, а экспертную поддержку: проведём тщательный анализ, выявим потенциальные сложности и предложим оптимальные решения. Наш комплексный и системный подход охватывает весь цикл — от креативного дизайна до его точной реализации. Мы одинаково уверенно чувствуем себя как в создании уникальных интерьеров, так и в их воплощении в жизнь.</p>
+</section>
+
+<div class="stack">
+  <section class="stack__sheet stack__sheet--image" style="background-image:url('{{ url_for('static', filename='img/services-hero.jpg') }}')">
+    <p class="stack__caption">Мы работаем по Москве, МО и по всей России.</p>
+  </section>
+  <section class="stack__sheet services-sheet">
+    <div class="services">
+      {% for s in C.SERVICES %}
+      <article class="service reveal" style="--d:{{ (loop.index0 % 4) * 70 }}ms">
+        <span class="service__num">{{ '%02d' % loop.index }}</span>
+        <h2 class="service__title">{{ s.title }}</h2>
+        {% if s['items'] %}
+        <ol class="service__items">
+          {% for it in s['items'] %}<li><span>{{ '%02d' % loop.index }}</span>{{ it }}</li>{% endfor %}
+        </ol>
+        {% endif %}
+        <p class="service__price">{{ s.price }}</p>
+        <button type="button" class="service__cta" data-lead="{{ s.kind }}" data-service="{{ s.title }}" data-title="{{ s.title }}" data-source="Услуги — карточка">оставить заявку</button>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+{% endblock %}

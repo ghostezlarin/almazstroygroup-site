@@ -1,0 +1,8 @@
+<div class="stats">
+  {% for value, label in C.STATS %}
+  <div class="stats__item reveal" style="--d:{{ loop.index0 * 90 }}ms">
+    <b data-count="{{ value }}">{{ value }}</b>
+    <span>{{ label }}</span>
+  </div>
+  {% endfor %}
+</div>
